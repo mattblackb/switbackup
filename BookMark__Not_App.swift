@@ -13,7 +13,7 @@ struct BookMark__Not_App: App {
 
     var body: some Scene {
         WindowGroup {
-            TestView(fileOnePath: "None", fileTwoPath: "none")
+            TestView(fileOnePath: "none", fileTwoPath: "none")
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

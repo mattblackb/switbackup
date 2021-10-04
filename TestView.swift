@@ -17,8 +17,15 @@ struct TestView: View {
     @State private var showingAlert = false
     @State private var message  = "Error!!!"
     
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest( sortDescriptors: [] ) var items : FetchedResults<Item>
+
+
     var body: some View {
         VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 10, content: {
+        
+            ListView() 
+            
             Text("fileOnePath:" + fileOnePath)
             Text("fileTwoPath:" + fileTwoPath)
             Button("Choose Folder One") {
@@ -32,15 +39,39 @@ struct TestView: View {
             Button(action: testExec) {
                 Label("Synchronise", systemImage: "plus")
             }
+            Button(action: addItems) {
+                Label("Add to saved", systemImage: "plus")
+            }
         }).padding(10)
         .alert(isPresented: $showingAlert, content: {
             Alert(title: Text("Important message"), message: Text(self.message), dismissButton: .default(Text("Got it!")))
         })
-        .frame(width: 400, alignment: .center)
+        .frame(width: 1000, alignment: .center)
        
     }
           
 
+    func addItems() {
+        let p = Item(context: viewContext)
+        print(items)
+        p.filePathOne = fileOnePath
+        p.filePathTwo = fileTwoPath
+        p.name = "Test./."
+//            print("Not Linlk"+self.plink)
+        do {
+            try  viewContext.save()
+        }
+        catch {
+            let nsError = error as NSError
+            print("Errro")
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+           
+        }
+        
+        
+    }
+    
+    
     func testExec() {
         if (self.fileOnePath != "None" &&  self.fileTwoPath != "None") {
             do {
