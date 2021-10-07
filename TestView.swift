@@ -10,6 +10,7 @@ import SwiftUI
 import SwiftExec
 
 
+
 struct TestView: View {
 
     @State var fileOnePath: String
@@ -21,34 +22,21 @@ struct TestView: View {
     @FetchRequest( sortDescriptors: [] ) var items : FetchedResults<Item>
 
 
+    let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    
+
+    
     var body: some View {
         VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 10, content: {
-        
-            ListView() 
-            
-            Text("fileOnePath:" + fileOnePath)
-            Text("fileTwoPath:" + fileTwoPath)
-            Button("Choose Folder One") {
-                self.selectFolder(selfVar: "filePathOne")
-            
-            }
-            Button("Choose Folder Two") {
-                self.selectFolder(selfVar: "filePathTwo")
-            
-            }
-            Button(action: testExec) {
-                Label("Synchronise", systemImage: "plus")
-            }
-            Button(action: addItems) {
-                Label("Add to saved", systemImage: "plus")
-            }
+            ListView()
         }).padding(10)
         .alert(isPresented: $showingAlert, content: {
             Alert(title: Text("Important message"), message: Text(self.message), dismissButton: .default(Text("Got it!")))
         })
         .frame(width: 1000, alignment: .center)
-       
     }
+    
+   
           
 
     func addItems() {
@@ -57,7 +45,6 @@ struct TestView: View {
         p.filePathOne = fileOnePath
         p.filePathTwo = fileTwoPath
         p.name = "Test./."
-//            print("Not Linlk"+self.plink)
         do {
             try  viewContext.save()
         }

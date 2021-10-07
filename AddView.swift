@@ -19,12 +19,13 @@ struct AddView: View {
     @State private var alertShowing = false
     @State var fileOnePath = ""
     @State  var fileTwoPath = ""
-
+    @State  var excludeList = ""
     
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing:0, content: {
-                    Text("Add new item")
+                
+                VStack(content: {Text("Add new item")
                         .padding(20)
                         .foregroundColor(.gray)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -40,9 +41,20 @@ struct AddView: View {
                         .padding(.leading, 20)
                         
                 
-                TextField("", text: $pname, onCommit: {
-                  
-                }).padding(20)
+                    TextField("", text: $pname, onCommit: {
+                      
+                    }).padding(20)
+                })
+                    
+                
+                Text("Exclude List (comma seperated")
+                    .padding(.leading, 20)
+                    
+            
+                    TextField("", text: $excludeList, onCommit: {
+                      
+                    }).padding(20)
+                
                 Text("Target Path:" + fileOnePath)
                 Text("fileTwoPath:" + fileTwoPath)
                 Button("Choose Folder One") {
@@ -77,6 +89,7 @@ struct AddView: View {
         } else {
             let p = Item(context: viewContext)
             p.name = self.pname
+            p.excludeList = self.excludeList
             p.filePathOne = self.fileOnePath
             p.filePathTwo = self.fileTwoPath
 //            print("Not Linlk"+self.plink)
@@ -89,8 +102,8 @@ struct AddView: View {
             }
         }
         self.pname = ""
-        self.pdesc = ""
-        self.plink = ""
+        self.fileOnePath = ""
+        self.fileTwoPath = ""
     }
     
     func selectFolder(selfVar : String) {
